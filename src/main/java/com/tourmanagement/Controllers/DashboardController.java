@@ -1,8 +1,9 @@
 package com.tourmanagement.Controllers;
 
-import com.tourmanagement.DTOs.Request.TourDTO;
 import com.tourmanagement.DTOs.Response.QuantityStatisticResp;
-import com.tourmanagement.DTOs.Response.TourRespDTO;
+import com.tourmanagement.DTOs.Response.RevenueRespDTO;
+import com.tourmanagement.DTOs.Response.TopProvinceRespDTO;
+import com.tourmanagement.Services.BookTourService;
 import com.tourmanagement.Services.DashboardService;
 import com.tourmanagement.Services.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,14 @@ public class DashboardController {
     private final DashboardService dashboardService;
     private final TourService tourService;
 
+    private final BookTourService bookTourService;
     @Autowired
-    public DashboardController(DashboardService dashboardService, TourService tourService) {
+    public DashboardController(DashboardService dashboardService,
+                               TourService tourService,
+                               BookTourService bookTourService) {
         this.dashboardService = dashboardService;
         this.tourService = tourService;
+        this.bookTourService = bookTourService;
     }
 
     @GetMapping("quantity-statistic")
@@ -32,8 +37,13 @@ public class DashboardController {
         return dashboardService.getQuantityStatistics();
     }
 
-    @GetMapping("today-tour")
-    public List<TourRespDTO> handeGetTodayTour() {
-        return tourService.getTodayTour();
+    @GetMapping("revenues")
+    public List<RevenueRespDTO> handleGetRevenuresPerWeek() {
+        return  bookTourService.getRevenuesSevenNearestDate();
+    }
+
+    @GetMapping("top-amazing-province")
+    public List<TopProvinceRespDTO> handleTopAmazingProvince() {
+        return bookTourService.getTopTheMostAmazingProvinces();
     }
 }

@@ -1,7 +1,6 @@
 package com.tourmanagement.Models;
 
 import com.tourmanagement.Shared.Types.EnumTransportModeTour;
-import com.tourmanagement.Shared.Utils.Converter;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -31,11 +30,15 @@ public class Tour {
     @Column(name = "available_seats", nullable = false)
     private Integer availableSeats;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "destination_id")
     private SightseeingSpot sightseeingSpot;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "province_id")
+    private Province province;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "guide_id")
     private TourGuide guide;
 
@@ -59,8 +62,4 @@ public class Tour {
 
     @Column(columnDefinition = "DOUBLE PRECISION DEFAULT 0.0")
     private Double rating = 0.0;
-
-    public String unsignalName() {
-        return Converter.convertVietnameseToUnsigned(this.name);
-    }
 }

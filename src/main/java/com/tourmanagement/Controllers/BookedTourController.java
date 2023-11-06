@@ -17,7 +17,6 @@ public class BookedTourController
 {
     private final BookTourService bookTourService;
 
-    
     @Autowired
     public BookedTourController(BookTourService bookTourService) {
         this.bookTourService = bookTourService;

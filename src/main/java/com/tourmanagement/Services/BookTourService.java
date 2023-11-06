@@ -3,11 +3,15 @@ package com.tourmanagement.Services;
 
 import com.tourmanagement.DTOs.Request.BookTourDTO;
 import com.tourmanagement.DTOs.Response.BookTourRespDTO;
+import com.tourmanagement.DTOs.Response.RevenueRespDTO;
+import com.tourmanagement.DTOs.Response.TopProvinceRespDTO;
+import com.tourmanagement.Dao.Impl.BookedTourDaoImpl;
 import com.tourmanagement.Models.BookedTour;
 import com.tourmanagement.Models.Customer;
 import com.tourmanagement.Models.Tour;
 import com.tourmanagement.Repositorys.BookTourRepository;
 import com.tourmanagement.Shared.Utils.EntityDtoConverter;
+import com.tourmanagement.Shared.Utils.Helper;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,13 +28,21 @@ public class BookTourService {
     private final TourService tourService;
     private final CustomerService customerService;
     private final EntityDtoConverter entityDtoConverter;
+    private final BookedTourDaoImpl bookedTourDao;
 
-    public BookTourService(BookTourRepository bookTourRepository, ModelMapper modelMapper, TourService tourService, CustomerService customerService, EntityDtoConverter entityDtoConverter) {
+    public BookTourService(
+            BookTourRepository bookTourRepository,
+            ModelMapper modelMapper,
+            TourService tourService,
+            CustomerService customerService,
+            EntityDtoConverter entityDtoConverter,
+            BookedTourDaoImpl bookedTourDao) {
         this.bookTourRepository = bookTourRepository;
         this.modelMapper = modelMapper;
         this.tourService = tourService;
         this.customerService = customerService;
         this.entityDtoConverter = entityDtoConverter;
+        this.bookedTourDao = bookedTourDao;
     }
 
     public List<BookTourRespDTO> getAllBookedTour() {
@@ -57,7 +69,7 @@ public class BookTourService {
         return result;
     }
 
-    public List<BookTourRespDTO> getAllBookedTourByTour(Long tourId){
+    public List<BookTourRespDTO> getAllBookedTourByTour(Long tourId) {
         tourService.getTourById(tourId);
         List<BookedTour> bookedTours = bookTourRepository.findBookedTourByTour(tourId);
         return bookedTours.stream()
@@ -93,4 +105,13 @@ public class BookTourService {
         bookTourRepository.deleteById(id);
     }
 
+    public List<RevenueRespDTO> getRevenuesSevenNearestDate() {
+        var nearestDates = Helper.getNearestDates(7);
+
+        return bookedTourDao.revenues(nearestDates);
+    }
+
+    public List<TopProvinceRespDTO> getTopTheMostAmazingProvinces() {
+        return bookedTourDao.theMostAmazingProvinces();
+    }
 }

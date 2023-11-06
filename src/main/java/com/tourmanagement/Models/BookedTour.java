@@ -19,14 +19,11 @@ public class BookedTour {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tour_id")
     private Tour tour;
 
-    @Column(
-            nullable = true,
-            name = "booking_date"
-    )
+    @Column(name = "booking_date", nullable = false)
     private Date bookingDate;
 
     @Enumerated(EnumType.STRING)
