@@ -26,8 +26,8 @@ public class EntityDtoConverter {
     // Helper method to convert Review entity to ReviewResponseDTO
     public ReviewRespDTO convertToReviewResponseDTO(Review review) {
         ReviewRespDTO dto = modelMapper.map(review, ReviewRespDTO.class);
-        dto.setCustomer(review.getCustomer());
-        dto.setTourId(review.getTour().getId());
+        //dto.setCustomer(review.getCustomer());
+        //dto.setTour(review.getTour());
         return dto;
     }
 

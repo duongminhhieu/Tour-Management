@@ -62,7 +62,7 @@ public class DiscountController {
     }
 
     @PutMapping("/{id}")
-    public DiscountRespDTO updateDiscount(@PathVariable Long id, @RequestBody DiscountDTO discountDTO) {
+    public DiscountRespDTO updateDiscount(@PathVariable Long id, @RequestBody @Valid DiscountDTO discountDTO) {
         DiscountRespDTO updatedDiscount = discountService.updateDiscount(id, discountDTO);
 
         return updatedDiscount;

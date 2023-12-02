@@ -1,14 +1,21 @@
 package com.tourmanagement.Services;
 
+import com.tourmanagement.DTOs.Payload.FilterDiscount;
+import com.tourmanagement.DTOs.Payload.FilterReview;
 import com.tourmanagement.DTOs.Request.ReviewDTO;
+import com.tourmanagement.DTOs.Response.DiscountRespDTO;
+import com.tourmanagement.DTOs.Response.PaginationRespDTO;
 import com.tourmanagement.DTOs.Response.ReviewRespDTO;
-import com.tourmanagement.Models.Customer;
-import com.tourmanagement.Models.Review;
-import com.tourmanagement.Models.Tour;
+import com.tourmanagement.DTOs.Response.TourGuideRespDTO;
+import com.tourmanagement.Models.*;
 import com.tourmanagement.Repositorys.ReviewRepository;
+import com.tourmanagement.Shared.Types.EnumStatusDiscount;
 import com.tourmanagement.Shared.Utils.EntityDtoConverter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -39,6 +46,22 @@ public class ReviewService {
         return reviews.stream()
                 .map(entityConverter::convertToReviewResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    public PaginationRespDTO<ReviewRespDTO> getAllReviewPagination(FilterReview filterReview) {
+        PaginationRespDTO<ReviewRespDTO> result = new PaginationRespDTO<ReviewRespDTO>();
+        result.setPage(filterReview.getPage());
+        result.setTotal((long) getAllReviews().size());
+        result.setItemsPerPage(filterReview.getItemsPerPage());
+
+        Pageable pageable = PageRequest.of(filterReview.getPage(), filterReview.getItemsPerPage());
+        Page<Review> reviews = reviewRepository.findAll(pageable);
+
+        result.setData(reviews.stream()
+                .map(entityConverter::convertToReviewResponseDTO)
+                .collect(Collectors.toList()));
+
+        return result;
     }
 
     public Review getReviewById(Long id) {

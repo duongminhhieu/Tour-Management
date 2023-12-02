@@ -1,5 +1,6 @@
 package com.tourmanagement.DTOs.Request;
 
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -23,5 +24,10 @@ public class ReviewDTO{
     private String comment;
     @PositiveOrZero(message = "Rating must be a positive or zero value")
     private Double rating;
+
+    @AssertTrue(message = "Rating should be between 0 and 5")
+    private boolean isRattingInRange() {
+        return rating == null || (rating >= 0 && rating <= 5);
+    }
 
 }

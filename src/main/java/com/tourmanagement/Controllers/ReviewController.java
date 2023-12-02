@@ -1,9 +1,14 @@
 package com.tourmanagement.Controllers;
 
+import com.tourmanagement.DTOs.Payload.FilterReview;
+import com.tourmanagement.DTOs.Payload.FilterTourGuide;
 import com.tourmanagement.DTOs.Request.ReviewDTO;
+import com.tourmanagement.DTOs.Response.PaginationRespDTO;
 import com.tourmanagement.DTOs.Response.ReviewRespDTO;
+import com.tourmanagement.DTOs.Response.TourGuideRespDTO;
 import com.tourmanagement.Models.Review;
 import com.tourmanagement.Services.ReviewService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +32,13 @@ public class ReviewController {
         return reviews;
     }
 
+    @GetMapping("/pagination")
+    public PaginationRespDTO<ReviewRespDTO> getAllReviewPagination(@ModelAttribute @Valid FilterReview filterReview) {
+        PaginationRespDTO<ReviewRespDTO> reviews = reviewService.getAllReviewPagination(filterReview);
+
+        return reviews;
+    }
+
     @GetMapping("/{id}")
     public ReviewRespDTO getReviewById(@PathVariable Long id) {
         ReviewRespDTO review = reviewService.getReviewResponseById(id);
@@ -47,13 +59,13 @@ public class ReviewController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ReviewRespDTO createReview(@RequestBody ReviewDTO reviewDTO) {
+    public ReviewRespDTO createReview(@RequestBody @Valid ReviewDTO reviewDTO) {
         ReviewRespDTO newReview = reviewService.createReview(reviewDTO);
         return newReview;
     }
 
     @PutMapping("/{id}")
-    public ReviewRespDTO updateReview(@PathVariable Long id, @RequestBody ReviewDTO reviewDTO) {
+    public ReviewRespDTO updateReview(@PathVariable Long id, @RequestBody @Valid ReviewDTO reviewDTO) {
         ReviewRespDTO updatedReview = reviewService.updateReview(id, reviewDTO);
         return updatedReview;
     }
