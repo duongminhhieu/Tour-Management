@@ -26,6 +26,6 @@ public class Review {
     @Column(columnDefinition="TEXT")
     private String comment;
 
-    @Column(columnDefinition = "DOUBLE PRECISION DEFAULT 0.0", nullable = false)
-    private Double rating;
+    @Column( nullable = false)
+    private Integer rating = 0;
 }

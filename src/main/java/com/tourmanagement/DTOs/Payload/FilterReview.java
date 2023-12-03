@@ -1,5 +1,6 @@
 package com.tourmanagement.DTOs.Payload;
 
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -22,4 +23,11 @@ public class FilterReview {
     private int itemsPerPage;
     private Long tourId;
     private Long customerId;
+    @PositiveOrZero(message = "Rating must be a positive or zero value")
+    private Integer rating;
+
+    @AssertTrue(message = "Rating should be between 0 and 5")
+    private boolean isRattingInRange() {
+        return rating == null || (rating >= 0 && rating <= 5);
+    }
 }

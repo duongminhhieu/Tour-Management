@@ -18,5 +18,5 @@ public class ReviewRespDTO {
     private Customer customer;
     private Tour tour;
     private String comment;
-    private Double rating;
+    private Integer rating;
 }

@@ -23,10 +23,10 @@ public class ReviewDTO{
     @Size(min = 2, message = "Comment must have 2 characters at least")
     private String comment;
     @PositiveOrZero(message = "Rating must be a positive or zero value")
-    private Double rating;
+    private Integer rating;
 
     @AssertTrue(message = "Rating should be between 0 and 5")
-    private boolean isRattingInRange() {
+    private boolean isRatingInRange() {
         return rating == null || (rating >= 0 && rating <= 5);
     }
 

@@ -18,18 +18,22 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("SELECT count(*) FROM Review r WHERE " +
             "(:customerId is null or r.customer.id = :customerId) and " +
-            "(:tourId is null or r.tour.id = :tourId)")
+            "(:tourId is null or r.tour.id = :tourId) and " +
+            "(:rating is null or r.rating = :rating)")
     Long countReviewByFilterReview(
             Long customerId,
-            Long tourId
+            Long tourId,
+            Integer rating
     );
 
     @Query("SELECT r FROM Review r WHERE " +
             "(:customerId is null or r.customer.id = :customerId) and " +
-            "(:tourId is null or r.tour.id = :tourId)")
+            "(:tourId is null or r.tour.id = :tourId) and" +
+            "(:rating is null or r.rating = :rating)")
     List<Review> findReviewsByFilterReview(
             Long customerId,
             Long tourId,
+            Integer rating,
             Pageable pageable
     );
 
