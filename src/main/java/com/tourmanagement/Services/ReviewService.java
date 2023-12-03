@@ -51,11 +51,11 @@ public class ReviewService {
     public PaginationRespDTO<ReviewRespDTO> getAllReviewPagination(FilterReview filterReview) {
         PaginationRespDTO<ReviewRespDTO> result = new PaginationRespDTO<ReviewRespDTO>();
         result.setPage(filterReview.getPage());
-        result.setTotal((long) getAllReviews().size());
+        result.setTotal(reviewRepository.countReviewByFilterReview(filterReview.getCustomerId(), filterReview.getTourId()));
         result.setItemsPerPage(filterReview.getItemsPerPage());
 
         Pageable pageable = PageRequest.of(filterReview.getPage(), filterReview.getItemsPerPage());
-        Page<Review> reviews = reviewRepository.findAll(pageable);
+        List<Review> reviews = reviewRepository.findReviewsByFilterReview(filterReview.getCustomerId(), filterReview.getTourId(), pageable);
 
         result.setData(reviews.stream()
                 .map(entityConverter::convertToReviewResponseDTO)

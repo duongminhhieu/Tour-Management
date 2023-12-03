@@ -1,8 +1,12 @@
 package com.tourmanagement.Repositorys;
+import com.tourmanagement.Models.Discount;
 import com.tourmanagement.Models.Review;
+import com.tourmanagement.Shared.Types.EnumStatusDiscount;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
@@ -11,4 +15,22 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("SELECT r FROM Review r WHERE r.customer.id = :customerId")
     List<Review> findByCustomerId(Long customerId);
+
+    @Query("SELECT count(*) FROM Review r WHERE " +
+            "(:customerId is null or r.customer.id = :customerId) and " +
+            "(:tourId is null or r.tour.id = :tourId)")
+    Long countReviewByFilterReview(
+            Long customerId,
+            Long tourId
+    );
+
+    @Query("SELECT r FROM Review r WHERE " +
+            "(:customerId is null or r.customer.id = :customerId) and " +
+            "(:tourId is null or r.tour.id = :tourId)")
+    List<Review> findReviewsByFilterReview(
+            Long customerId,
+            Long tourId,
+            Pageable pageable
+    );
+
 }

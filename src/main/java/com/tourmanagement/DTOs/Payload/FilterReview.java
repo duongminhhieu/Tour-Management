@@ -20,4 +20,6 @@ public class FilterReview {
     @Positive(message = "Items per page must be a positive number")
     @NotNull(message = "ItemsPerPage cannot be null")
     private int itemsPerPage;
+    private Long tourId;
+    private Long customerId;
 }

@@ -16,8 +16,11 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
 
 
     @Query("SELECT count(*) FROM Discount d WHERE " +
-            "(:startDate is null or d.startDate >= :startDate) and " +
-            "(:endDate is null or d.endDate <= :endDate) and " +
+            "((:startDate is null and :endDate is null) or " +
+            "(:startDate is null and d.endDate >= :startDate) or " +
+            "(:endDate is null and d.startDate <= :endDate) or " +
+            "(:startDate is not null and :endDate is not null and " +
+            "d.startDate <= :endDate and d.endDate >= :startDate)) and " +
             "(:status is null or d.status = :status)")
     Long countDiscountByFilterDiscount(
             Date startDate,
@@ -26,12 +29,16 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
     );
 
     @Query("SELECT d FROM Discount d WHERE " +
-            "(:startDate is null or d.startDate >= :startDate) and " +
-            "(:endDate is null or d.endDate <= :endDate) and " +
+            "((:startDate is null and :endDate is null) or " +
+            "(:startDate is null and d.endDate >= :startDate) or " +
+            "(:endDate is null and d.startDate <= :endDate) or " +
+            "(:startDate is not null and :endDate is not null and " +
+            "d.startDate <= :endDate and d.endDate >= :startDate)) and " +
             "(:status is null or d.status = :status)")
     List<Discount> findDiscountsByFilterDiscount(
             Date startDate,
             Date endDate,
-            EnumStatusDiscount status, Pageable pageable);
+            EnumStatusDiscount status, Pageable pageable
+    );
 
 }
