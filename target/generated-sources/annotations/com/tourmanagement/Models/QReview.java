@@ -28,7 +28,7 @@ public class QReview extends EntityPathBase<Review> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Integer> rating = createNumber("rating", Integer.class);
+    public final NumberPath<Double> rating = createNumber("rating", Double.class);
 
     public final QTour tour;
 

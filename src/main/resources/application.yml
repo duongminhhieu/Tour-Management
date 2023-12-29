@@ -8,9 +8,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/tour_management
-    username: root
-    password: 1234
+    url: jdbc:mysql://avnadmin:AVNS_i7JRaOR1RZtYVmolWAj@mysql-15be781-duongminhhieu2082002-b36e.a.aivencloud.com:23092/defaultdb?ssl-mode=REQUIRED
+    username: avnadmin
+    password: AVNS_i7JRaOR1RZtYVmolWAj
   jpa:
     hibernate:
       ddl-auto: update
